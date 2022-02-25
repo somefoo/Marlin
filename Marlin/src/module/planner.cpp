@@ -3097,8 +3097,6 @@ bool Planner::buffer_line(const xyze_pos_t &cart, const_feedRate_t fr_mm_s, cons
 void Planner::set_machine_position_mm(const abce_pos_t &abce) {
   TERN_(DISTINCT_E_FACTORS, last_extruder = active_extruder);
   TERN_(HAS_POSITION_FLOAT, position_float = abce);
-
-  settings.axis_steps_per_mm[A_AXIS] = (active_extruder == 0) ? 80 : 64;
   position.set(
     LOGICAL_AXIS_LIST(
       LROUND(abce.e * settings.axis_steps_per_mm[E_AXIS_N(active_extruder)]),
