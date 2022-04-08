@@ -143,7 +143,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Ender-3"
+#define CUSTOM_MACHINE_NAME "German RepRap Neo"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -486,7 +486,7 @@
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  *
  */
-#define TEMP_SENSOR_0 1
+#define TEMP_SENSOR_0 5 // E3D Thermistor is 5, default was 1
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -494,7 +494,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED 1
+#define TEMP_SENSOR_BED 0
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 #define TEMP_SENSOR_COOLER 0
@@ -555,14 +555,14 @@
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 275
-#define HEATER_1_MAXTEMP 275
-#define HEATER_2_MAXTEMP 275
-#define HEATER_3_MAXTEMP 275
-#define HEATER_4_MAXTEMP 275
-#define HEATER_5_MAXTEMP 275
-#define HEATER_6_MAXTEMP 275
-#define HEATER_7_MAXTEMP 275
+#define HEATER_0_MAXTEMP 245
+#define HEATER_1_MAXTEMP 245
+#define HEATER_2_MAXTEMP 245
+#define HEATER_3_MAXTEMP 245
+#define HEATER_4_MAXTEMP 245
+#define HEATER_5_MAXTEMP 245
+#define HEATER_6_MAXTEMP 245
+#define HEATER_7_MAXTEMP 245
 #define BED_MAXTEMP      150
 #define CHAMBER_MAXTEMP  60
 
@@ -623,7 +623,8 @@
  * heater. If your configuration is significantly different than this and you don't understand
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
-#define PIDTEMPBED
+// The GRR Neo does not have a hot bed
+//#define PIDTEMPBED
 
 //#define BED_LIMIT_SWITCHING
 
@@ -927,7 +928,34 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+// GRR Neo Hardware (Original with 1/16th stepping):
+// X:
+//   Belt Tooth Pitch: 3mm
+//   Teeth on pully: 14
+//   Motor steps/rev: 200
+//   Driver Microsteps: 16
+//   => 200 * 16 / (3 * 14) = 76,19047619
+// Y: 
+//   Belt Tooth Pitch: 3mm
+//   Teeth on pully: 12
+//   Motor steps/rev: 200
+//   Driver Microsteps: 16
+//   => 200 * 16 / (3 * 12) = 88,888888889
+// Z:
+//   Screw Pitch: 2
+//     Geared down to an effective value of 1: 
+//   Motor steps/rev: 200
+//   Driver Microsteps: 16
+//   => 200 * 16 / (2/2) = 3200.0
+// E: 93.0
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 76.19, 88.89, 3200.0, 93.0 }
+
+// Values for 256 stepping:
+// X: 200 * 256 / (3 * 14) = 1219,047619048
+// Y: 200 * 256 / (3 * 12) = 1422,222222222
+// Z: 200 * 256 / (2/2)    = 51200
+// E: 93.0 * 16 = 1488 // Notice, 16*16 = 256
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 1219.05, 1422,22, 51200.0, 1488.0 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1330,9 +1358,9 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+#define INVERT_X_DIR false
+#define INVERT_Y_DIR false
+#define INVERT_Z_DIR true
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1378,8 +1406,8 @@
 // @section machine
 
 // The size of the printable area
-#define X_BED_SIZE 235
-#define Y_BED_SIZE 235
+#define X_BED_SIZE 150
+#define Y_BED_SIZE 150
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1387,7 +1415,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 250
+#define Z_MAX_POS 150
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
