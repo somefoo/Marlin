@@ -947,8 +947,9 @@
 //   Motor steps/rev: 200
 //   Driver Microsteps: 16
 //   => 200 * 16 / (2/2) = 3200.0
-// E: 93.0
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 76.19, 88.89, 3200.0, 93.0 }
+// Default: E: 93.0
+// Tested on my printer: E: 116.25
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 76.19, 88.89, 3200.0, 116.25 }
 
 // Values for 256 stepping:
 // X: 200 * 256 / (3 * 14) = 1219,047619048
